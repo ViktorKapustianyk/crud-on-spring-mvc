@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/js/myscript.js"></script>
+
+</head>
+<body>
+<div id="container">
+    <h1>Welcome to work</h1>
+    <p>This is the list of tasks.</p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task, number : ${tasks}">
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.description}" th:id="'description_' + ${task.id}"></td>
+            <td th:text="${task.status}" th:id="'status_' + ${task.id}"></td>
+            <td>
+                <button th:id="'edit_' + ${task.id}" th:onclick="'edit_task(' + ${task.id} + ')'" class="edit-btn">Edit</button>
+            </td>
+            <td>
+                <button th:id="'delete_' + ${task.id}" th:onclick="'delete_task(' + ${task.id} + ')'" class="delete-btn">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>
+        <button th:each="pageNumber : ${page_numbers}" class="button_page">
+            <a th:href="@{/(page=${pageNumber}, limit=10)}" th:text="${pageNumber}" th:classappend="${pageNumber == current_page? 'activ page' : ''}"></a>
+        </button>
+    </h2>
+    <form>
+        <label for="description_new">Description:</label>
+        <input id="description_new" type="text" value="">
+
+        <label for="status_new">Status:</label>
+        <select id="status_new">
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="DONE">DONE</option>
+            <option value="PAUSED">PAUSED</option>
+        </select>
+
+        <button id="save_new" th:onclick="'add_task()'">Save</button>
+    </form>
+</div>
+</body>
+</html>
